@@ -15,9 +15,8 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 public class Libro {
-    @Column(name = "isbn")
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "isbn")
     private Long isbn;
     @Column(name = "titulo")
     private String titulo;

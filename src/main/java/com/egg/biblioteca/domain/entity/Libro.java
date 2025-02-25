@@ -23,6 +23,7 @@ public class Libro {
     private String titulo;
     @Column(name = "ejemplares")
     private Integer ejemplares;
+    @Column(name = "alta")
     @Temporal(TemporalType.DATE)
     private Date alta;
     @ManyToOne

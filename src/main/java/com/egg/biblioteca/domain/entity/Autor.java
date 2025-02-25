@@ -2,7 +2,6 @@ package com.egg.biblioteca.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,14 +13,15 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class Autor {
-    @Column(name = "id_autor")
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id_autor")
     private UUID id;
+
     @Column(name = "nombre")
     private String nombre;
+
     @OneToMany(mappedBy = "autor")
     private Set<Libro> libros;
 }

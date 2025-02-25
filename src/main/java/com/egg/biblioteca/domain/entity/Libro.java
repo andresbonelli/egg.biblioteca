@@ -2,7 +2,6 @@ package com.egg.biblioteca.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,21 +12,25 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class Libro {
     @Id
     @Column(name = "isbn")
     private Long isbn;
+
     @Column(name = "titulo")
     private String titulo;
+
     @Column(name = "ejemplares")
     private Integer ejemplares;
-    @Column(name = "alta")
+
     @Temporal(TemporalType.DATE)
+    @Column(name = "alta")
     private Date alta;
+
     @ManyToOne
     @JoinColumn(name = "id_autor")
     private Autor autor;
+
     @ManyToOne
     @JoinColumn(name = "id_editorial")
     private Editorial editorial;

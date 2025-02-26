@@ -22,6 +22,4 @@ public class Editorial {
     @Column(name = "nombre")
     private String nombre;
 
-    @OneToMany(mappedBy = "editorial")
-    private Set<Libro> libros;
 }

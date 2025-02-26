@@ -21,7 +21,4 @@ public class Autor {
 
     @Column(name = "nombre")
     private String nombre;
-
-    @OneToMany(mappedBy = "autor")
-    private Set<Libro> libros;
 }

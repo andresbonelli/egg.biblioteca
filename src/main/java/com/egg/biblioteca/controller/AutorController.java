@@ -1,48 +1,36 @@
 package com.egg.biblioteca.controller;
 
-import com.egg.biblioteca.domain.entity.Autor;
 import com.egg.biblioteca.service.AutorService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
-import java.util.Map;
-
-@RestController
+@Slf4j
+@Controller
 @RequestMapping("/autor")
 @RequiredArgsConstructor
 public class AutorController {
 
     private final AutorService autorService;
 
-    @GetMapping("/listar")
-    public List<Autor> listarAutores(){
-        return autorService.listarAutores();
+    @GetMapping("/registrar") // localhost:8080/autor/registrar
+    public String registrar() {
+        return "autor_form.html";
     }
 
-    @GetMapping("/buscar")
-    public List<Autor> buscarPorNombre(@RequestParam("nombre") String nombre){
-        return autorService.buscarPorNombre(nombre);
+    @PostMapping("/registro")
+    public String registro(@RequestParam String nombre){
+        try {
+            autorService.crearAutor(nombre);
+        } catch (Exception ex) {
+            log.error("Error al crear el autor {}", ex.getMessage(), ex);
+            return "autor_form.html";
+        }
+        return "index.html";
     }
-
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public void crearAutor(@RequestBody Map<String, String> request){
-        String nombre = request.get("nombre");
-        autorService.crearAutor(nombre);
-    }
-
-    @PutMapping
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public void modificarAutor(@RequestBody Autor autor){
-        autorService.modificarAutor(autor);
-    }
-
-    @DeleteMapping
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void eliminarAutor(@RequestBody Autor autor){
-        autorService.eliminarAutor(autor);
-    }
-
 }
+

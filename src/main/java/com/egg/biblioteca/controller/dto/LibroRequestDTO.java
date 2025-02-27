@@ -4,7 +4,7 @@ public record LibroRequestDTO(
         Long isbn,
         String titulo,
         Integer ejemplares,
-        String autor,
-        String editorial
+        String autorID,
+        String editorialID
 ) {
 }

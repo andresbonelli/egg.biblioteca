@@ -9,6 +9,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +25,11 @@ public class AutorService {
     @Transactional(readOnly = true)
     public List<Autor> buscarPorNombre(String nombre){
         return autorRepository.buscarPorNombre(nombre);
+    }
+
+    @Transactional(readOnly = true)
+    public Autor buscarPorId(UUID id){
+        return autorRepository.findById(id).orElseThrow(RegistroNoExisteException::new);
     }
 
     @Transactional

@@ -2,57 +2,45 @@ package com.egg.biblioteca.controller;
 
 import com.egg.biblioteca.controller.dto.LibroRequestDTO;
 import com.egg.biblioteca.domain.entity.Libro;
+import com.egg.biblioteca.service.AutorService;
+import com.egg.biblioteca.service.EditorialService;
 import com.egg.biblioteca.service.LibroService;
-import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
-
-@RestController
+@Controller
 @RequestMapping("/libro")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class LibroController {
-
+    
     private final LibroService libroService;
+    private final AutorService autorService;
+    private final EditorialService editorialService;
 
-    @GetMapping("/listar")
-    public List<Libro> listarLibros(){
-        return libroService.listarLibros();
+    @GetMapping("/registrar")
+    public String registrar(Model model) {
+        //model.addAttribute("libro", new Libro());
+        model.addAttribute("autores", autorService.listarAutores());
+        model.addAttribute("editoriales", editorialService.listarEditoriales());
+        return "libro_form.html";
     }
 
-    @GetMapping("/{isbn}")
-    public Libro buscarPorIsbn(@PathVariable("isbn") Long isbn){
-        return libroService.buscarPorIsbn(isbn);
-    }
-
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public void crearLibro(@RequestBody LibroRequestDTO request){
-        libroService.crearLibro(
-                request.isbn(),
-                request.titulo(),
-                request.ejemplares(),
-                request.autor(),
-                request.editorial()
-        );
-    }
-
-    @PutMapping
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public void modificarLibro(@RequestBody LibroRequestDTO request){
-        libroService.modificarLibro(
-                request.isbn(),
-                request.titulo(),
-                request.ejemplares(),
-                request.autor(),
-                request.editorial()
-        );
-    }
-
-    @DeleteMapping("/{isbn}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void eliminarLibro(@PathVariable("isbn") Long isbn){
-        libroService.eliminarLibro(isbn);
+    @PostMapping("/registro")
+    public String registro(@RequestParam Long isbn,
+                           @RequestParam String titulo,
+                           @RequestParam Integer ejemplares,
+                           @RequestParam String autorID,
+                           @RequestParam String editorialID,
+                           RedirectAttributes redirectAttrs) {
+        try {
+            libroService.crearLibro(new LibroRequestDTO(isbn, titulo, ejemplares, autorID, editorialID));
+            redirectAttrs.addFlashAttribute("exito", "Libro registrado con éxito!");
+        } catch (Exception e) {
+            redirectAttrs.addFlashAttribute("error", "Error al registrar el libro.");
+        }
+        return "index.html";
     }
 }

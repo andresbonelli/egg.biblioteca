@@ -21,6 +21,11 @@ public class AutorController {
         return autorService.listarAutores();
     }
 
+    @GetMapping("/buscar")
+    public List<Autor> buscarPorNombre(@RequestParam("nombre") String nombre){
+        return autorService.buscarPorNombre(nombre);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void crearAutor(@RequestBody Map<String, String> request){

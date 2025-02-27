@@ -27,6 +27,11 @@ public class LibroService {
     }
 
     @Transactional(readOnly = true)
+    public Libro buscarPorIsbn(Long isbn) {
+        return libroRepository.findById(isbn).orElseThrow(RegistroNoExisteException::new);
+    }
+
+    @Transactional(readOnly = true)
     public List<Libro> buscarPorTitulo(String titulo) {
         return libroRepository.listarPorTitulo(titulo);
     }

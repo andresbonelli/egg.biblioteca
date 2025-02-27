@@ -21,6 +21,11 @@ public class LibroController {
         return libroService.listarLibros();
     }
 
+    @GetMapping("/{isbn}")
+    public Libro buscarPorIsbn(@PathVariable("isbn") Long isbn){
+        return libroService.buscarPorIsbn(isbn);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void crearLibro(@RequestBody LibroRequestDTO request){

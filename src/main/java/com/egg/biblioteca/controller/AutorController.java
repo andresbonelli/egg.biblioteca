@@ -4,6 +4,7 @@ import com.egg.biblioteca.service.AutorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,11 +24,13 @@ public class AutorController {
     }
 
     @PostMapping("/registro")
-    public String registro(@RequestParam String nombre){
+    public String registro(@RequestParam String nombre, ModelMap model){
         try {
             autorService.crearAutor(nombre);
+            model.put("exito", "Autor registrado con éxito!");
         } catch (Exception ex) {
             log.error("Error al crear el autor {}", ex.getMessage(), ex);
+            model.put("error", ex.getMessage());
             return "autor_form.html";
         }
         return "index.html";

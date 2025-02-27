@@ -3,7 +3,7 @@ package com.egg.biblioteca.service;
 import com.egg.biblioteca.controller.dto.LibroRequestDTO;
 import com.egg.biblioteca.domain.entity.Libro;
 import com.egg.biblioteca.domain.repository.LibroRepository;
-import com.egg.biblioteca.exception.LibroValidationException;
+import com.egg.biblioteca.exception.ValidationException;
 import com.egg.biblioteca.exception.RegistroNoExisteException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,7 +52,7 @@ public class LibroService {
     public void crearLibro(LibroRequestDTO libro) {
         validar(libro.isbn(), libro.titulo(), libro.ejemplares());
         if (libroRepository.existsById(libro.isbn())) {
-            throw new LibroValidationException("El ISBN ya existe.");
+            throw new ValidationException("El ISBN ya existe.");
         }
         Libro nuevoLibro = new Libro();
         nuevoLibro.setIsbn(libro.isbn());
@@ -63,7 +63,7 @@ public class LibroService {
             nuevoLibro.setEditorial(editorialService.buscarPorId(UUID.fromString(libro.editorialID())));
         } catch (Exception e) {
             log.error("Error al crear el libro: {}", e.getMessage());
-            throw new LibroValidationException("Editorial o Autor no existente.");
+            throw new ValidationException("Editorial o Autor no existente.");
         }
         nuevoLibro.setAlta(new Date());
         libroRepository.save(nuevoLibro);
@@ -79,15 +79,15 @@ public class LibroService {
         libroRepository.delete(libro);
     }
 
-    private void validar (Long isbn, String titulo, Integer ejemplares) throws LibroValidationException{
+    private void validar (Long isbn, String titulo, Integer ejemplares) throws ValidationException {
         if (null == isbn){
-            throw new LibroValidationException("El ISBN no puede ser NULO.");
+            throw new ValidationException("El ISBN no puede ser NULO.");
         }
         if(null == titulo || titulo.isBlank()){
-            throw new LibroValidationException("El TÍTULO no puede ser NULO");
+            throw new ValidationException("El TÍTULO no puede ser NULO");
         }
         if(null == ejemplares || ejemplares <= 0){
-            throw new LibroValidationException("Los EJEMPLARES no pueden ser NULOS");
+            throw new ValidationException("Los EJEMPLARES no pueden ser NULOS");
         }
     }
 

@@ -1,15 +1,16 @@
 package com.egg.biblioteca.controller;
 
 import com.egg.biblioteca.controller.dto.LibroRequestDTO;
-import com.egg.biblioteca.domain.entity.Libro;
 import com.egg.biblioteca.service.AutorService;
 import com.egg.biblioteca.service.EditorialService;
 import com.egg.biblioteca.service.LibroService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 @Controller
 @RequestMapping("/libro")
@@ -34,12 +35,15 @@ public class LibroController {
                            @RequestParam Integer ejemplares,
                            @RequestParam String autorID,
                            @RequestParam String editorialID,
-                           RedirectAttributes redirectAttrs) {
+                           ModelMap model) {
         try {
             libroService.crearLibro(new LibroRequestDTO(isbn, titulo, ejemplares, autorID, editorialID));
-            redirectAttrs.addFlashAttribute("exito", "Libro registrado con éxito!");
+            model.put("exito", "Libro registrado con éxito!");
         } catch (Exception e) {
-            redirectAttrs.addFlashAttribute("error", "Error al registrar el libro.");
+            model.put("error", e.getMessage());
+            model.addAttribute("autores", autorService.listarAutores());
+            model.addAttribute("editoriales", editorialService.listarEditoriales());
+            return "libro_form.html";
         }
         return "index.html";
     }

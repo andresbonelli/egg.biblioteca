@@ -4,6 +4,7 @@ import com.egg.biblioteca.domain.entity.Autor;
 import com.egg.biblioteca.domain.repository.AutorRepository;
 import com.egg.biblioteca.exception.RegistroNoExisteException;
 import com.egg.biblioteca.exception.RegistroRelacionadoException;
+import com.egg.biblioteca.exception.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,9 @@ public class AutorService {
     @Transactional
     public void crearAutor(String nombre){
         Autor autor = new Autor();
+        if  (nombre == null || nombre.isBlank()) {
+            throw new ValidationException("El nombre no puede ser VACIO o NULO");
+        }
         autor.setNombre(nombre);
         autorRepository.save(autor);
     }

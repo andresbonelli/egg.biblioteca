@@ -3,6 +3,7 @@ package com.egg.biblioteca.service;
 import com.egg.biblioteca.domain.entity.Editorial;
 import com.egg.biblioteca.domain.repository.EditorialRepository;
 import com.egg.biblioteca.exception.RegistroNoExisteException;
+import com.egg.biblioteca.exception.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +35,9 @@ public class EditorialService {
     @Transactional
     public void crearEditorial(String nombre){
         Editorial editorial = new Editorial();
+        if (null  == nombre || nombre.isBlank()) {
+            throw new ValidationException("El nombre no puede ser VACIO o NULO");
+        }
         editorial.setNombre(nombre);
         editorialRepository.save(editorial);
     }

@@ -14,6 +14,16 @@ public class EditorialService {
 
     private final EditorialRepository editorialRepository;
 
+    @Transactional(readOnly = true)
+    public List<Editorial> listarEditoriales(){
+        return editorialRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Editorial> buscarPorNombre(String nombre){
+        return editorialRepository.buscarPorNombre(nombre);
+    }
+
     @Transactional
     public void crearEditorial(String nombre){
         Editorial editorial = new Editorial();
@@ -21,8 +31,13 @@ public class EditorialService {
         editorialRepository.save(editorial);
     }
 
-    @Transactional(readOnly = true)
-    public List<Editorial> buscarPorNombre(String nombre){
-        return editorialRepository.buscarPorNombre(nombre);
+    @Transactional
+    public void modificarEditorial(Editorial editorial){
+        editorialRepository.save(editorial);
+    }
+
+    @Transactional
+    public void eliminarEditorial(Editorial editorial){
+        editorialRepository.delete(editorial);
     }
 }

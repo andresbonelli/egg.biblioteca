@@ -1,20 +1,30 @@
 package com.egg.biblioteca.service;
 
 import com.egg.biblioteca.domain.entity.Autor;
-import com.egg.biblioteca.domain.entity.Libro;
 import com.egg.biblioteca.domain.repository.AutorRepository;
+import com.egg.biblioteca.exception.RegistroNoExisteException;
+import com.egg.biblioteca.exception.RegistroRelacionadoException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class AutorService {
 
     private final AutorRepository autorRepository;
+
+    @Transactional(readOnly = true)
+    public List<Autor> listarAutores(){
+        return autorRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Autor> buscarPorNombre(String nombre){
+        return autorRepository.buscarPorNombre(nombre);
+    }
 
     @Transactional
     public void crearAutor(String nombre){
@@ -23,19 +33,18 @@ public class AutorService {
         autorRepository.save(autor);
     }
 
-    @Transactional(readOnly = true)
-    public List<Autor> buscarPorNombre(String nombre){
-        return autorRepository.buscarPorNombre(nombre);
+    @Transactional
+    public void modificarAutor(Autor autor){
+        autorRepository.findById(autor.getId()).orElseThrow(RegistroNoExisteException::new);
+        autorRepository.save(autor);
     }
-
-    @Transactional(readOnly = true)
-    public List<Autor> listarAutores(){
-        return autorRepository.findAll();
-    }
-
 
     @Transactional
     public void eliminarAutor(Autor autor){
-        autorRepository.delete(autor);
+        try {
+            autorRepository.deleteById(autor.getId());
+        } catch (DataIntegrityViolationException e) {
+            throw new RegistroRelacionadoException("El autor posee libros registrados. Eliminar primero los libros correspondientes.");
+        }
     }
 }

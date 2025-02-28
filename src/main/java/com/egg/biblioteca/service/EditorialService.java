@@ -2,11 +2,14 @@ package com.egg.biblioteca.service;
 
 import com.egg.biblioteca.domain.entity.Editorial;
 import com.egg.biblioteca.domain.repository.EditorialRepository;
+import com.egg.biblioteca.exception.RegistroNoExisteException;
+import com.egg.biblioteca.exception.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -24,9 +27,17 @@ public class EditorialService {
         return editorialRepository.buscarPorNombre(nombre);
     }
 
+    @Transactional(readOnly = true)
+    public Editorial buscarPorId(UUID id){
+        return editorialRepository.findById(id).orElseThrow(RegistroNoExisteException::new);
+    }
+
     @Transactional
     public void crearEditorial(String nombre){
         Editorial editorial = new Editorial();
+        if (null  == nombre || nombre.isBlank()) {
+            throw new ValidationException("El nombre no puede ser VACIO o NULO");
+        }
         editorial.setNombre(nombre);
         editorialRepository.save(editorial);
     }

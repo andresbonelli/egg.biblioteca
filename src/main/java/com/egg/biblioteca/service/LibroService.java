@@ -1,8 +1,9 @@
 package com.egg.biblioteca.service;
 
+import com.egg.biblioteca.controller.dto.LibroRequestDTO;
 import com.egg.biblioteca.domain.entity.Libro;
 import com.egg.biblioteca.domain.repository.LibroRepository;
-import com.egg.biblioteca.exception.LibroValidationException;
+import com.egg.biblioteca.exception.ValidationException;
 import com.egg.biblioteca.exception.RegistroNoExisteException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -47,41 +49,29 @@ public class LibroService {
     }
 
     @Transactional
-    public void crearLibro(Long isbn, String titulo, Integer ejemplares, String nombreAutor, String nombreEditorial) {
-        validar(isbn, titulo, ejemplares, nombreAutor, nombreEditorial);
-        if (libroRepository.existsById(isbn)) {
-            throw new LibroValidationException("El ISBN ya existe.");
+    public void crearLibro(LibroRequestDTO libro) {
+        validar(libro.isbn(), libro.titulo(), libro.ejemplares());
+        if (libroRepository.existsById(libro.isbn())) {
+            throw new ValidationException("El ISBN ya existe.");
         }
-        Libro libro = new Libro();
-        libro.setIsbn(isbn);
-        libro.setTitulo(titulo);
-        libro.setEjemplares(ejemplares);
-        libro.setAlta(new Date());
+        Libro nuevoLibro = new Libro();
+        nuevoLibro.setIsbn(libro.isbn());
+        nuevoLibro.setTitulo(libro.titulo());
+        nuevoLibro.setEjemplares(libro.ejemplares());
         try {
-            libro.setAutor(autorService.buscarPorNombre(nombreAutor).get(0));
-            libro.setEditorial(editorialService.buscarPorNombre(nombreEditorial).get(0));
+            nuevoLibro.setAutor(autorService.buscarPorId(UUID.fromString(libro.autorID())));
+            nuevoLibro.setEditorial(editorialService.buscarPorId(UUID.fromString(libro.editorialID())));
         } catch (Exception e) {
             log.error("Error al crear el libro: {}", e.getMessage());
-            throw new LibroValidationException("Editorial o Autor no existente.");
+            throw new ValidationException("Editorial o Autor no existente.");
         }
-        libroRepository.save(libro);
+        nuevoLibro.setAlta(new Date());
+        libroRepository.save(nuevoLibro);
     }
 
-    @Transactional
-    public void modificarLibro(Long isbn, String titulo, Integer ejemplares, String nombreAutor, String nombreEditorial) {
-        validar(isbn, titulo, ejemplares, nombreAutor, nombreEditorial);
-        Libro libro = libroRepository.findById(isbn).orElseThrow(RegistroNoExisteException::new);
-        libro.setTitulo(titulo);
-        libro.setEjemplares(ejemplares);
-        try {
-            libro.setAutor(autorService.buscarPorNombre(nombreAutor).get(0));
-            libro.setEditorial(editorialService.buscarPorNombre(nombreEditorial).get(0));
-        } catch (Exception e) {
-            log.error("Error al modificar el libro: {}", e.getMessage());
-            throw new LibroValidationException("Editorial o Autor no existente.");
-        }
-        libroRepository.save(libro);
+    public void crearLibroDesdeController(Libro libro) {
     }
+
 
     @Transactional
     public void eliminarLibro(Long isbn) {
@@ -89,22 +79,18 @@ public class LibroService {
         libroRepository.delete(libro);
     }
 
-    private void validar (Long isbn, String titulo, Integer ejemplares, String nombreAutor, String nombreEditorial) throws LibroValidationException{
+    private void validar (Long isbn, String titulo, Integer ejemplares) throws ValidationException {
         if (null == isbn){
-            throw new LibroValidationException("El ISBN no puede ser NULO.");
+            throw new ValidationException("El ISBN no puede ser NULO.");
         }
         if(null == titulo || titulo.isBlank()){
-            throw new LibroValidationException("El TÍTULO no puede ser NULO");
+            throw new ValidationException("El TÍTULO no puede ser NULO");
         }
         if(null == ejemplares || ejemplares <= 0){
-            throw new LibroValidationException("Los EJEMPLARES no pueden ser NULOS");
-        }
-        if (null == nombreAutor || nombreAutor.isBlank()){
-            throw new LibroValidationException("El AUTOR no puede ser NULO");
-        }
-        if (null == nombreEditorial || nombreEditorial.isBlank()){
-            throw new LibroValidationException("La EDITORIAL no puede ser NULA");
+            throw new ValidationException("Los EJEMPLARES no pueden ser NULOS");
         }
     }
 
+    public void modificarLibro(LibroRequestDTO resquest) {
+    }
 }

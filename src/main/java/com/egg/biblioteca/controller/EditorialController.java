@@ -1,44 +1,38 @@
 package com.egg.biblioteca.controller;
 
-import com.egg.biblioteca.domain.entity.Editorial;
 import com.egg.biblioteca.service.EditorialService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.repository.query.Param;
-import org.springframework.web.bind.annotation.*;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
-import java.util.Map;
-
-@RestController
+@Slf4j
+@Controller
 @RequestMapping("/editorial")
 @RequiredArgsConstructor
 public class EditorialController {
 
     private final EditorialService editorialService;
 
-    @GetMapping("/listar")
-    public String listarEditoriales(){
-        return editorialService.listarEditoriales().toString();
+    @GetMapping("/registrar")
+    public String registrar(){
+        return "editorial_form";
     }
 
-    @GetMapping("/buscar")
-    public List<Editorial> buscarPorNombre(@RequestParam("nombre") String nombre){
-        return editorialService.buscarPorNombre(nombre);
-    }
-
-    @PostMapping
-    public void crearEditorial(@RequestBody Map<String, String> request){
-        String nombre = request.get("nombre");
-        editorialService.crearEditorial(nombre);
-    }
-
-    @PutMapping
-    public void modificarEditorial(@RequestBody Editorial editorial){
-        editorialService.modificarEditorial(editorial);
-    }
-
-    @DeleteMapping
-    public void eliminarEditorial(@RequestBody Editorial editorial){
-        editorialService.eliminarEditorial(editorial);
+    @PostMapping("/registro")
+    public String registro(@RequestParam("nombre") String nombre, ModelMap model){
+        try {
+            editorialService.crearEditorial(nombre);
+            model.put("exito", "Editorial registrada con éxito!");
+        } catch (Exception ex) {
+            log.error("Error al crear la editorial {}", ex.getMessage(), ex);
+            model.put("error", ex.getMessage());
+            return "editorial_form";
+        }
+        return "index";
     }
 }

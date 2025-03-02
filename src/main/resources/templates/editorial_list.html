@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="utf-8" />
-  <title>Lista de Libros</title>
+  <title>Lista de Editoriales</title>
   <link href="css/one-page-wonder.min.css" rel="stylesheet" />
   <link
           href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
@@ -12,31 +12,23 @@
   />
   <link rel="stylesheet" href="/css/index.css" />
 
-<!--  <link rel="stylesheet" href="/css/lista.css" />-->
+  <!--  <link rel="stylesheet" href="/css/lista.css" />-->
 </head>
 <body>
 <nav th:replace="~{layout :: navbar}"></nav>
 <div class="container mt-5">
-  <h2 class="text-center mb-4">Lista de Libros</h2>
+  <h2 class="text-center mb-4">Lista de Editoriales</h2>
   <table class="table table-striped table-bordered">
     <thead class="table-dark">
     <tr>
-      <th>ISBN</th>
-      <th>Título</th>
-      <th>Ejemplares</th>
-      <th>Fecha de Alta</th>
-      <th>Autor</th>
-      <th>Editorial</th>
+      <th>ID</th>
+      <th>Nombre</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="libro : ${libros}">
-      <td th:text="${libro.isbn}"></td>
-      <td th:text="${libro.titulo}"></td>
-      <td th:text="${libro.ejemplares}"></td>
-      <td th:text="${#dates.format(libro.alta, 'dd/MM/yyyy')}"></td>
-      <td th:text="${libro.autor.nombre}"></td>
-      <td th:text="${libro.editorial.nombre}"></td>
+    <tr th:each="editorial : ${editoriales}">
+      <td th:text="${editorial.id}"></td>
+      <td th:text="${editorial.nombre}"></td>
     </tr>
     </tbody>
   </table>

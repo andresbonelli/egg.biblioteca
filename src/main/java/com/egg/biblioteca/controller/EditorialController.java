@@ -4,6 +4,7 @@ import com.egg.biblioteca.service.EditorialService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,5 +35,11 @@ public class EditorialController {
             return "editorial_form";
         }
         return "index";
+    }
+
+    @GetMapping("/lista")
+    public String listar(Model model){
+        model.addAttribute("editoriales", editorialService.listarEditoriales());
+        return "editorial_list";
     }
 }

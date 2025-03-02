@@ -4,6 +4,7 @@ import com.egg.biblioteca.service.AutorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,6 +35,12 @@ public class AutorController {
             return "autor_form.html";
         }
         return "index.html";
+    }
+
+    @GetMapping("/lista")
+    public String listar(Model model) {
+        model.addAttribute("autores", autorService.listarAutores());
+        return "autor_list.html";
     }
 }
 

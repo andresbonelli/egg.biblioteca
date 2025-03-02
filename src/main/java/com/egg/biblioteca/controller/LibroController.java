@@ -47,4 +47,10 @@ public class LibroController {
         }
         return "index.html";
     }
+
+    @GetMapping("/lista")
+    public String listar(Model model) {
+        model.addAttribute("libros", libroService.listarLibros());
+        return "libro_list.html";
+    }
 }

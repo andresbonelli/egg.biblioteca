@@ -27,6 +27,7 @@
       <th>Fecha de Alta</th>
       <th>Autor</th>
       <th>Editorial</th>
+      <th></th>
     </tr>
     </thead>
     <tbody>
@@ -37,6 +38,11 @@
       <td th:text="${#dates.format(libro.alta, 'dd/MM/yyyy')}"></td>
       <td th:text="${libro.autor.nombre}"></td>
       <td th:text="${libro.editorial.nombre}"></td>
+      <td class="d-flex flex-row justify-content-end gap-2"> <a class="btn btn-primary" th:href="@{/libro/editar/{isbn}(isbn=${libro.isbn})}">
+        Editar
+      </a> <a class="btn btn-danger" th:href="@{/libro/eliminar/{isbn}(isbn=${libro.isbn})}">
+        Eliminar
+      </a></td>
     </tr>
     </tbody>
   </table>

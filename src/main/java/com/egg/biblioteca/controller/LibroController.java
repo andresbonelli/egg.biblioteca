@@ -1,17 +1,20 @@
 package com.egg.biblioteca.controller;
 
+import com.egg.biblioteca.controller.dto.LibroEditDTO;
 import com.egg.biblioteca.controller.dto.LibroRequestDTO;
+import com.egg.biblioteca.domain.entity.Libro;
 import com.egg.biblioteca.service.AutorService;
 import com.egg.biblioteca.service.EditorialService;
 import com.egg.biblioteca.service.LibroService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-
+@Slf4j
 @Controller
 @RequestMapping("/libro")
 @RequiredArgsConstructor
@@ -44,6 +47,46 @@ public class LibroController {
             model.addAttribute("autores", autorService.listarAutores());
             model.addAttribute("editoriales", editorialService.listarEditoriales());
             return "libro_form.html";
+        }
+        return "index.html";
+    }
+
+    @GetMapping("/editar/{isbn}")
+    public String editar(@PathVariable Long isbn, Model model) {
+        Libro libro = libroService.buscarPorIsbn(isbn);
+        LibroEditDTO libroEditDTO = new LibroEditDTO();
+        libroEditDTO.setIsbn(libro.getIsbn());
+        libroEditDTO.setTitulo(libro.getTitulo());
+        libroEditDTO.setEjemplares(libro.getEjemplares());
+        libroEditDTO.setAutorId(libro.getAutor().getId().toString());
+        libroEditDTO.setEditorialId(libro.getEditorial().getId().toString());
+        model.addAttribute("libro", libroEditDTO);
+        model.addAttribute("autores", autorService.listarAutores());
+        model.addAttribute("editoriales", editorialService.listarEditoriales());
+        return "libro_edit_form.html";
+    }
+
+    @PostMapping("/editar")
+    public String editar(@ModelAttribute LibroEditDTO libro, Model model) {
+        try {
+            libroService.modificarLibro(libro);
+            model.addAttribute("exito", "Libro modificado con éxito!");
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("autores", autorService.listarAutores());
+            model.addAttribute("editoriales", editorialService.listarEditoriales());
+            return "libro_edit_form.html";
+        }
+        return "index.html";
+    }
+
+    @GetMapping("/eliminar/{isbn}")
+    public String eliminar(@PathVariable Long isbn, Model model) {
+        try {
+            libroService.eliminarLibro(isbn);
+            model.addAttribute("exito", "Libro eliminado con éxito!");
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
         }
         return "index.html";
     }

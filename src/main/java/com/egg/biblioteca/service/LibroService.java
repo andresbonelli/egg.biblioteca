@@ -1,5 +1,6 @@
 package com.egg.biblioteca.service;
 
+import com.egg.biblioteca.controller.dto.LibroEditDTO;
 import com.egg.biblioteca.controller.dto.LibroRequestDTO;
 import com.egg.biblioteca.domain.entity.Libro;
 import com.egg.biblioteca.domain.repository.LibroRepository;
@@ -69,9 +70,21 @@ public class LibroService {
         libroRepository.save(nuevoLibro);
     }
 
-    public void crearLibroDesdeController(Libro libro) {
+    @Transactional
+    public void modificarLibro(LibroEditDTO libro) {
+        validar(libro.getIsbn(), libro.getTitulo(), libro.getEjemplares());
+        Libro libroModificado = libroRepository.findById(libro.getIsbn()).orElseThrow(RegistroNoExisteException::new);
+        libroModificado.setTitulo(libro.getTitulo());
+        libroModificado.setEjemplares(libro.getEjemplares());
+        try {
+            libroModificado.setAutor(autorService.buscarPorId(UUID.fromString(libro.getAutorId())));
+            libroModificado.setEditorial(editorialService.buscarPorId(UUID.fromString(libro.getEditorialId())));
+        } catch (Exception e) {
+            log.error("Error al modificar el libro: {}", e.getMessage());
+            throw new ValidationException("Editorial o Autor no existente.");
+        }
+        libroRepository.save(libroModificado);
     }
-
 
     @Transactional
     public void eliminarLibro(Long isbn) {
@@ -89,8 +102,5 @@ public class LibroService {
         if(null == ejemplares || ejemplares <= 0){
             throw new ValidationException("Los EJEMPLARES no pueden ser NULOS");
         }
-    }
-
-    public void modificarLibro(LibroRequestDTO resquest) {
     }
 }

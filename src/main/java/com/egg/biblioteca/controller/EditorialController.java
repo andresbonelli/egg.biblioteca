@@ -26,14 +26,8 @@ public class EditorialController {
 
     @PostMapping("/registro")
     public String registro(@RequestParam("nombre") String nombre, ModelMap model){
-        try {
-            editorialService.crearEditorial(nombre);
-            model.put("exito", "Editorial registrada con éxito!");
-        } catch (Exception ex) {
-            log.error("Error al crear la editorial {}", ex.getMessage(), ex);
-            model.put("error", ex.getMessage());
-            return "editorial_form";
-        }
+        editorialService.crearEditorial(nombre);
+        model.put("exito", "Editorial registrada con éxito!");
         return "index";
     }
 

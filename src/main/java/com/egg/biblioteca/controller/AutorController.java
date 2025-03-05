@@ -26,14 +26,8 @@ public class AutorController {
 
     @PostMapping("/registro")
     public String registro(@RequestParam String nombre, ModelMap model){
-        try {
-            autorService.crearAutor(nombre);
-            model.put("exito", "Autor registrado con éxito!");
-        } catch (Exception ex) {
-            log.error("Error al crear el autor {}", ex.getMessage(), ex);
-            model.put("error", ex.getMessage());
-            return "autor_form.html";
-        }
+        autorService.crearAutor(nombre);
+        model.put("exito", "Autor registrado con éxito!");
         return "index.html";
     }
 

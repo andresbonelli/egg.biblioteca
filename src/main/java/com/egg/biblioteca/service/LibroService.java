@@ -1,6 +1,5 @@
 package com.egg.biblioteca.service;
 
-import com.egg.biblioteca.controller.dto.LibroEditDTO;
 import com.egg.biblioteca.controller.dto.LibroRequestDTO;
 import com.egg.biblioteca.domain.entity.Libro;
 import com.egg.biblioteca.domain.repository.LibroRepository;
@@ -60,8 +59,8 @@ public class LibroService {
         nuevoLibro.setTitulo(libro.titulo());
         nuevoLibro.setEjemplares(libro.ejemplares());
         try {
-            nuevoLibro.setAutor(autorService.buscarPorId(UUID.fromString(libro.autorID())));
-            nuevoLibro.setEditorial(editorialService.buscarPorId(UUID.fromString(libro.editorialID())));
+            nuevoLibro.setAutor(autorService.buscarPorId(UUID.fromString(libro.autorId())));
+            nuevoLibro.setEditorial(editorialService.buscarPorId(UUID.fromString(libro.editorialId())));
         } catch (Exception e) {
             log.error("Error al crear el libro: {}", e.getMessage());
             throw new ValidationException("Editorial o Autor no existente.");
@@ -71,14 +70,14 @@ public class LibroService {
     }
 
     @Transactional
-    public void modificarLibro(LibroEditDTO libro) {
-        validar(libro.getIsbn(), libro.getTitulo(), libro.getEjemplares());
-        Libro libroModificado = libroRepository.findById(libro.getIsbn()).orElseThrow(RegistroNoExisteException::new);
-        libroModificado.setTitulo(libro.getTitulo());
-        libroModificado.setEjemplares(libro.getEjemplares());
+    public void modificarLibro(LibroRequestDTO libro) {
+        validar(libro.isbn(), libro.titulo(), libro.ejemplares());
+        Libro libroModificado = libroRepository.findById(libro.isbn()).orElseThrow(RegistroNoExisteException::new);
+        libroModificado.setTitulo(libro.titulo());
+        libroModificado.setEjemplares(libro.ejemplares());
         try {
-            libroModificado.setAutor(autorService.buscarPorId(UUID.fromString(libro.getAutorId())));
-            libroModificado.setEditorial(editorialService.buscarPorId(UUID.fromString(libro.getEditorialId())));
+            libroModificado.setAutor(autorService.buscarPorId(UUID.fromString(libro.autorId())));
+            libroModificado.setEditorial(editorialService.buscarPorId(UUID.fromString(libro.editorialId())));
         } catch (Exception e) {
             log.error("Error al modificar el libro: {}", e.getMessage());
             throw new ValidationException("Editorial o Autor no existente.");

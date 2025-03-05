@@ -1,6 +1,5 @@
 package com.egg.biblioteca.controller;
 
-import com.egg.biblioteca.controller.dto.LibroEditDTO;
 import com.egg.biblioteca.controller.dto.LibroRequestDTO;
 import com.egg.biblioteca.domain.entity.Libro;
 import com.egg.biblioteca.service.LibroService;
@@ -35,7 +34,7 @@ public class LibroRC {
 
     @PutMapping
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void modificarLibro(@RequestBody LibroEditDTO request){
+    public void modificarLibro(@RequestBody LibroRequestDTO request){
         libroService.modificarLibro(request);
     }
 

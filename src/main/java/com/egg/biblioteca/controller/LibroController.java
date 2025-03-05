@@ -1,6 +1,5 @@
 package com.egg.biblioteca.controller;
 
-import com.egg.biblioteca.controller.dto.LibroEditDTO;
 import com.egg.biblioteca.controller.dto.LibroRequestDTO;
 import com.egg.biblioteca.domain.entity.Libro;
 import com.egg.biblioteca.service.AutorService;
@@ -23,6 +22,12 @@ public class LibroController {
     private final LibroService libroService;
     private final AutorService autorService;
     private final EditorialService editorialService;
+
+    @GetMapping("/lista")
+    public String listar(Model model) {
+        model.addAttribute("libros", libroService.listarLibros());
+        return "libro_list.html";
+    }
 
     @GetMapping("/registrar")
     public String registrar(Model model) {
@@ -54,30 +59,33 @@ public class LibroController {
     @GetMapping("/editar/{isbn}")
     public String editar(@PathVariable Long isbn, Model model) {
         Libro libro = libroService.buscarPorIsbn(isbn);
-        LibroEditDTO libroEditDTO = new LibroEditDTO();
-        libroEditDTO.setIsbn(libro.getIsbn());
-        libroEditDTO.setTitulo(libro.getTitulo());
-        libroEditDTO.setEjemplares(libro.getEjemplares());
-        libroEditDTO.setAutorId(libro.getAutor().getId().toString());
-        libroEditDTO.setEditorialId(libro.getEditorial().getId().toString());
-        model.addAttribute("libro", libroEditDTO);
+        LibroRequestDTO libroRequestDTO = new LibroRequestDTO(
+                libro.getIsbn(),
+                libro.getTitulo(),
+                libro.getEjemplares(),
+                libro.getAutor().getId().toString(),
+                libro.getEditorial().getId().toString()
+        );
+        model.addAttribute("libro", libroRequestDTO);
         model.addAttribute("autores", autorService.listarAutores());
         model.addAttribute("editoriales", editorialService.listarEditoriales());
         return "libro_edit_form.html";
     }
 
     @PostMapping("/editar")
-    public String editar(@ModelAttribute LibroEditDTO libro, Model model) {
+    public String editar(@ModelAttribute LibroRequestDTO libro, ModelMap model) {
         try {
             libroService.modificarLibro(libro);
             model.addAttribute("exito", "Libro modificado con éxito!");
+            return "index.html";
         } catch (Exception e) {
+            log.error("Error al modificar el libro {}", e.getMessage(), e);
             model.addAttribute("error", e.getMessage());
+            model.addAttribute("libro", libro);
             model.addAttribute("autores", autorService.listarAutores());
             model.addAttribute("editoriales", editorialService.listarEditoriales());
             return "libro_edit_form.html";
         }
-        return "index.html";
     }
 
     @GetMapping("/eliminar/{isbn}")
@@ -89,11 +97,5 @@ public class LibroController {
             model.addAttribute("error", e.getMessage());
         }
         return "index.html";
-    }
-
-    @GetMapping("/lista")
-    public String listar(Model model) {
-        model.addAttribute("libros", libroService.listarLibros());
-        return "libro_list.html";
     }
 }

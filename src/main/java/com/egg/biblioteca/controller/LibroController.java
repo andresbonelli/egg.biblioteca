@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,13 +23,13 @@ public class LibroController {
     private final EditorialService editorialService;
 
     @GetMapping("/lista")
-    public String listar(Model model) {
+    public String listar(ModelMap model) {
         model.addAttribute("libros", libroService.listarLibros());
         return "libro_list.html";
     }
 
     @GetMapping("/registrar")
-    public String registrar(Model model) {
+    public String registrar(ModelMap model) {
         //model.addAttribute("libro", new Libro());
         model.addAttribute("autores", autorService.listarAutores());
         model.addAttribute("editoriales", editorialService.listarEditoriales());
@@ -53,7 +52,7 @@ public class LibroController {
     }
 
     @GetMapping("/editar/{isbn}")
-    public String editar(@PathVariable Long isbn, Model model) {
+    public String editar(@PathVariable Long isbn, ModelMap model) {
         Libro libro = libroService.buscarPorIsbn(isbn);
         LibroRequestDTO libroRequestDTO = new LibroRequestDTO(
                 libro.getIsbn(),
@@ -85,13 +84,13 @@ public class LibroController {
     }
 
     @GetMapping("/eliminar/{isbn}")
-    public String eliminar(@PathVariable Long isbn, Model model) {
+    public String eliminar(@PathVariable Long isbn, ModelMap model) {
         try {
             libroService.eliminarLibro(isbn);
             model.addAttribute("exito", "Libro eliminado con éxito!");
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
         }
-        return "index.html";
+        return "redirect:../lista";
     }
 }

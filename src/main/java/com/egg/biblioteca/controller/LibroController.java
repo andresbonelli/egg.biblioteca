@@ -38,16 +38,12 @@ public class LibroController {
     }
 
     @PostMapping("/registro")
-    public String registro(@RequestParam Long isbn,
-                           @RequestParam String titulo,
-                           @RequestParam Integer ejemplares,
-                           @RequestParam String autorID,
-                           @RequestParam String editorialID,
-                           ModelMap model) {
+    public String registro(@ModelAttribute LibroRequestDTO libro, ModelMap model) {
         try {
-            libroService.crearLibro(new LibroRequestDTO(isbn, titulo, ejemplares, autorID, editorialID));
+            libroService.crearLibro(libro);
             model.put("exito", "Libro registrado con éxito!");
         } catch (Exception e) {
+            log.error("Error al crear el libro {}", e.getMessage(), e);
             model.put("error", e.getMessage());
             model.addAttribute("autores", autorService.listarAutores());
             model.addAttribute("editoriales", editorialService.listarEditoriales());
@@ -77,7 +73,7 @@ public class LibroController {
         try {
             libroService.modificarLibro(libro);
             model.addAttribute("exito", "Libro modificado con éxito!");
-            return "index.html";
+            return "redirect:lista";
         } catch (Exception e) {
             log.error("Error al modificar el libro {}", e.getMessage(), e);
             model.addAttribute("error", e.getMessage());

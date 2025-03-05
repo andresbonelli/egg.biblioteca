@@ -30,7 +30,6 @@ public class LibroController {
 
     @GetMapping("/registrar")
     public String registrar(ModelMap model) {
-        //model.addAttribute("libro", new Libro());
         model.addAttribute("autores", autorService.listarAutores());
         model.addAttribute("editoriales", editorialService.listarEditoriales());
         return "libro_form.html";
@@ -38,16 +37,8 @@ public class LibroController {
 
     @PostMapping("/registro")
     public String registro(@ModelAttribute LibroRequestDTO libro, ModelMap model) {
-        try {
-            libroService.crearLibro(libro);
-            model.put("exito", "Libro registrado con éxito!");
-        } catch (Exception e) {
-            log.error("Error al crear el libro {}", e.getMessage(), e);
-            model.put("error", e.getMessage());
-            model.addAttribute("autores", autorService.listarAutores());
-            model.addAttribute("editoriales", editorialService.listarEditoriales());
-            return "libro_form.html";
-        }
+        libroService.crearLibro(libro);
+        model.put("exito", "Libro registrado con éxito!");
         return "index.html";
     }
 
@@ -69,28 +60,15 @@ public class LibroController {
 
     @PostMapping("/editar")
     public String editar(@ModelAttribute LibroRequestDTO libro, ModelMap model) {
-        try {
-            libroService.modificarLibro(libro);
-            model.addAttribute("exito", "Libro modificado con éxito!");
-            return "redirect:lista";
-        } catch (Exception e) {
-            log.error("Error al modificar el libro {}", e.getMessage(), e);
-            model.addAttribute("error", e.getMessage());
-            model.addAttribute("libro", libro);
-            model.addAttribute("autores", autorService.listarAutores());
-            model.addAttribute("editoriales", editorialService.listarEditoriales());
-            return "libro_edit_form.html";
-        }
+        libroService.modificarLibro(libro);
+        model.addAttribute("exito", "Libro modificado con éxito!");
+        return "redirect:lista";
     }
 
     @GetMapping("/eliminar/{isbn}")
     public String eliminar(@PathVariable Long isbn, ModelMap model) {
-        try {
-            libroService.eliminarLibro(isbn);
-            model.addAttribute("exito", "Libro eliminado con éxito!");
-        } catch (Exception e) {
-            model.addAttribute("error", e.getMessage());
-        }
+        libroService.eliminarLibro(isbn);
+        model.addAttribute("exito", "Libro eliminado con éxito!");
         return "redirect:../lista";
     }
 }

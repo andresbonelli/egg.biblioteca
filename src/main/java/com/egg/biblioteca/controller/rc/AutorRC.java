@@ -1,4 +1,4 @@
-package com.egg.biblioteca.controller;
+package com.egg.biblioteca.controller.rc;
 
 import com.egg.biblioteca.domain.entity.Autor;
 import com.egg.biblioteca.service.AutorService;
@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/autor")

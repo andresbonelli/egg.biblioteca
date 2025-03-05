@@ -1,4 +1,4 @@
-package com.egg.biblioteca.controller;
+package com.egg.biblioteca.controller.rc;
 
 import com.egg.biblioteca.domain.entity.Editorial;
 import com.egg.biblioteca.service.EditorialService;
@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/editorial")

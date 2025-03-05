@@ -1,4 +1,4 @@
-package com.egg.biblioteca.controller;
+package com.egg.biblioteca.controller.rc;
 
 import com.egg.biblioteca.controller.dto.LibroRequestDTO;
 import com.egg.biblioteca.domain.entity.Libro;

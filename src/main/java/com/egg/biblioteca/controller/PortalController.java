@@ -4,6 +4,7 @@ import com.egg.biblioteca.controller.dto.UserRegisterDTO;
 import com.egg.biblioteca.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,8 +33,9 @@ public class PortalController {
     }
 
     @PostMapping("/registro")
-    public String registro(@ModelAttribute UserRegisterDTO usuario) {
+    public String registro(@ModelAttribute UserRegisterDTO usuario, ModelMap model) {
         usuarioService.registro(usuario);
+        model.put("exito", "Usuario registrado con éxito");
         return "index.html";
     }
 }

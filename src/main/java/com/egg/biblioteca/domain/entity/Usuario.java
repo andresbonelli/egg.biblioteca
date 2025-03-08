@@ -1,24 +1,31 @@
 package com.egg.biblioteca.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
 @Entity
-@Table(name = "t_editorial",  schema = "biblioteca")
+@Table(name = "t_usuario", schema = "biblioteca")
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class Editorial {
+public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id_editorial")
     private UUID id;
 
     @Column(name = "nombre")
     private String nombre;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "password")
+    private String passwordHash;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "rol")
+    private Role rol;
 
 }

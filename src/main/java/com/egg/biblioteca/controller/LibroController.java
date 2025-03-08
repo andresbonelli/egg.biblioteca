@@ -6,13 +6,11 @@ import com.egg.biblioteca.service.AutorService;
 import com.egg.biblioteca.service.EditorialService;
 import com.egg.biblioteca.service.LibroService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-@Slf4j
 @Controller
 @RequestMapping("/libro")
 @RequiredArgsConstructor

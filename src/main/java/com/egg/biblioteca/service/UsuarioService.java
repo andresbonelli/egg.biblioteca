@@ -29,7 +29,6 @@ import java.util.List;
 public class UsuarioService implements UserDetailsService {
 
     private final UsuarioRepository usuarioRepository;
-    private final BCryptPasswordEncoder encoder;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -55,7 +54,7 @@ public class UsuarioService implements UserDetailsService {
         Usuario nuevoUsuario = new Usuario();
         nuevoUsuario.setNombre(usuario.nombre());
         nuevoUsuario.setEmail(usuario.email());
-        nuevoUsuario.setPasswordHash(encoder.encode(usuario.password()));
+        nuevoUsuario.setPasswordHash(new BCryptPasswordEncoder().encode(usuario.password()));
         nuevoUsuario.setRol(Role.USER);
         usuarioRepository.save(nuevoUsuario);
     }

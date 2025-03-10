@@ -28,7 +28,7 @@ public class AutorController {
     public String registro(@RequestParam String nombre, ModelMap model){
         autorService.crearAutor(nombre);
         model.put("exito", "Autor registrado con éxito!");
-        return "index.html";
+        return "home.html";
     }
 
     @GetMapping("/lista")

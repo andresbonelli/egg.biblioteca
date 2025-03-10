@@ -7,7 +7,9 @@
         <link rel="stylesheet" href="/css/formulario.css">
     </head>
     <body>
+    <nav th:replace="~{layout :: landing-nav}"></nav>
         <div class="container-fluid m-5 contenedor">
+
             <div th:replace="~{layout :: mensajes}"></div>
 
             <form class="formulario" th:action="@{/registro}" method="POST">

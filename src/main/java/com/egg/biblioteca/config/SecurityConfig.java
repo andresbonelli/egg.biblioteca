@@ -23,7 +23,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/css/**", "/js/**", "/img/**", "/registrar", "/registro")
+                        .requestMatchers("/css/**", "/js/**", "/img/**", "/registrar", "/registro", "/")
                         .permitAll()
                         .anyRequest().authenticated())
                 .formLogin(form -> form
@@ -31,14 +31,12 @@ public class SecurityConfig {
                         .loginProcessingUrl("/logincheck")
                         .usernameParameter("email")
                         .passwordParameter("password")
-                        .defaultSuccessUrl("/", true)
+                        .defaultSuccessUrl("/home", true)
                         .permitAll())
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login")
                         .permitAll())
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
                 .headers(headers -> headers
                         .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
                 .csrf(AbstractHttpConfigurer::disable);

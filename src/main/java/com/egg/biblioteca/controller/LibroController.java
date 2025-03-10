@@ -37,7 +37,7 @@ public class LibroController {
     public String registro(@ModelAttribute LibroRequestDTO libro, ModelMap model) {
         libroService.crearLibro(libro);
         model.put("exito", "Libro registrado con éxito!");
-        return "index.html";
+        return "home.html";
     }
 
     @GetMapping("/editar/{isbn}")

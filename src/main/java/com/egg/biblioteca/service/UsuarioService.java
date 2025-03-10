@@ -41,6 +41,7 @@ public class UsuarioService implements UserDetailsService {
             permisos.add(p);
             ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
             HttpSession session = attr.getRequest().getSession(true);
+            session.setAttribute("usuariosession", user);
             return new User(user.getEmail(), user.getPasswordHash(), permisos);
         } else {
             log.error("Usuario no encontrado: {}", email);

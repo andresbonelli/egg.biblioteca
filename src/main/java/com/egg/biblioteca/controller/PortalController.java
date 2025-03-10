@@ -1,12 +1,17 @@
 package com.egg.biblioteca.controller;
 
 import com.egg.biblioteca.controller.dto.UserRegisterDTO;
+import com.egg.biblioteca.domain.entity.Usuario;
 import com.egg.biblioteca.service.UsuarioService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @Controller
 @RequestMapping("/")
 @RequiredArgsConstructor
@@ -14,14 +19,11 @@ public class PortalController {
 
     private final UsuarioService usuarioService;
 
-    @GetMapping("/inicio")
-    public String inicio() {
-        return "inicio.html";
-    }
-
-    @GetMapping("/")
-    public String index() {
-        return "index.html";
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+    @GetMapping("/home")
+    public String index(HttpSession session) {
+        Usuario authenticatedUser = (Usuario) session.getAttribute("usuariosession");
+        return "home.html";
     }
 
     @GetMapping("/login")
@@ -34,9 +36,6 @@ public class PortalController {
 
     @GetMapping("/registrar")
     public String registrar(@RequestParam(required = false) String error, ModelMap model) {
-        if (error != null) {
-            model.put("error", error);
-        }
         return "signup_form.html";
     }
 

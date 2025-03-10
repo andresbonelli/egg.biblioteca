@@ -19,7 +19,6 @@ public class PortalController {
 
     private final UsuarioService usuarioService;
 
-    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @GetMapping("/home")
     public String index(HttpSession session) {
         Usuario authenticatedUser = (Usuario) session.getAttribute("usuariosession");
@@ -45,4 +44,5 @@ public class PortalController {
         model.put("exito", "Usuario registrado con éxito");
         return "redirect:login";
     }
+
 }

@@ -28,4 +28,8 @@ public class Usuario {
     @Column(name = "rol")
     private Role rol;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_imagen")
+    private Imagen imagen;
+
 }

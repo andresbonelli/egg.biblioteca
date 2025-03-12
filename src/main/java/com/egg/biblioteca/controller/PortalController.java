@@ -11,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Controller
@@ -43,8 +44,8 @@ public class PortalController {
     }
 
     @PostMapping("/registro")
-    public String registro(@ModelAttribute UserRegisterDTO usuario, ModelMap model) {
-        usuarioService.registro(usuario);
+    public String registro(@ModelAttribute UserRegisterDTO usuario, @RequestParam("file") MultipartFile file, ModelMap model) {
+        usuarioService.registro(usuario, file);
         model.put("exito", "Usuario registrado con éxito");
         return "redirect:login";
     }

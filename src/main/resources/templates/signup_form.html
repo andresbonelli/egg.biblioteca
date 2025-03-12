@@ -12,7 +12,7 @@
 
             <div th:replace="~{layout :: mensajes}"></div>
 
-            <form class="formulario" th:action="@{/registro}" method="POST">
+            <form class="formulario" th:action="@{/registro}" method="POST" enctype="multipart/form-data">
 
                 <div class="form-group my-3">
                     <h3 class="card-title">Registrate!</h3>
@@ -29,6 +29,9 @@
                 </div>
                 <div class="form-group my-3">
                     <input type="password" class="form-control" name="confirmPassword" placeholder="REPETIR CONTRASEÑA" th:value="${password2}">
+                </div>
+                <div class="form-group my-3">
+                    <input type="file" class="form-control" name="file">
                 </div>
 
 

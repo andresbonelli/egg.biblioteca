@@ -1,9 +1,11 @@
 package com.egg.biblioteca.service;
 
 import com.egg.biblioteca.controller.dto.UserRegisterDTO;
+import com.egg.biblioteca.domain.entity.Imagen;
 import com.egg.biblioteca.domain.entity.Role;
 import com.egg.biblioteca.domain.entity.Usuario;
 import com.egg.biblioteca.domain.repository.UsuarioRepository;
+import com.egg.biblioteca.exception.RegistroNoExisteException;
 import com.egg.biblioteca.exception.ValidationException;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -20,9 +22,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -32,6 +36,7 @@ public class UsuarioService implements UserDetailsService {
     ErrorController errorController;
 
     private final UsuarioRepository usuarioRepository;
+    private final ImagenService imagenService;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -53,13 +58,17 @@ public class UsuarioService implements UserDetailsService {
     }
 
     @Transactional
-    public void registro(UserRegisterDTO usuario) {
+    public void registro(UserRegisterDTO usuario, MultipartFile file) {
         validar(usuario.nombre(), usuario.email(), usuario.password(), usuario.confirmPassword());
         Usuario nuevoUsuario = new Usuario();
         nuevoUsuario.setNombre(usuario.nombre());
         nuevoUsuario.setEmail(usuario.email());
         nuevoUsuario.setPasswordHash(new BCryptPasswordEncoder().encode(usuario.password()));
         nuevoUsuario.setRol(Role.USER);
+        if (file != null) {
+            Imagen imagen = imagenService.guardar(file);
+            nuevoUsuario.setImagen(imagen);
+        }
         usuarioRepository.save(nuevoUsuario);
     }
 
@@ -79,4 +88,7 @@ public class UsuarioService implements UserDetailsService {
         }
     }
 
+    public Usuario buscarPorId(UUID id) {
+        return usuarioRepository.findById(id).orElseThrow(RegistroNoExisteException::new);
+    }
 }

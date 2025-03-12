@@ -52,6 +52,11 @@
       <span sec:authentication="name"></span></p>
       <div sec:authorize="hasRole('ADMIN')">
         <p>Bienvenido, administrador.</p> </div>
+      <div class="container">
+        <a th:if="${session.subject.imagen != null}" class="d-flex align-items-center">
+          <img class="logo" th:src="@{/imagen/perfil/__${session.subject.id}__}" >
+        </a>
+      </div>
       <button
         class="navbar-toggler"
         type="button"

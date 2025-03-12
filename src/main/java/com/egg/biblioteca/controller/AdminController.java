@@ -9,6 +9,6 @@ public class AdminController {
 
     @RequestMapping("/dashboard")
     public String panelAdministrativo() {
-        return "panel.html";
+        return "panel";
     }
 }

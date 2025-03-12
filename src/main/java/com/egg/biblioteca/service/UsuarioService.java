@@ -8,6 +8,7 @@ import com.egg.biblioteca.exception.ValidationException;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -28,6 +29,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UsuarioService implements UserDetailsService {
 
+    ErrorController errorController;
+
     private final UsuarioRepository usuarioRepository;
 
     @Override
@@ -41,7 +44,7 @@ public class UsuarioService implements UserDetailsService {
             permisos.add(p);
             ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
             HttpSession session = attr.getRequest().getSession(true);
-            session.setAttribute("usuariosession", user);
+            session.setAttribute("subject", user);
             return new User(user.getEmail(), user.getPasswordHash(), permisos);
         } else {
             log.error("Usuario no encontrado: {}", email);

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
   <head th:fragment="page_head">
     <meta charset="utf-8" />
     <title>Biblioteca Egg</title>
@@ -27,13 +27,13 @@
       <div class="collapse navbar-collapse elementosNav" id="navbarNavDropdown">
         <ul class="navbar-nav ms-auto elementos">
           <li class="nav-item">
-            <a class="nav-link " th:if="${session.usuariosession == null}" href="/registrar" id="navbarDropdown" role="button" aria-expanded="false">
+            <a class="nav-link " th:if="${session.subject == null}" href="/registrar" id="navbarDropdown" role="button" aria-expanded="false">
               Registrate!
             </a>
 
           </li>
           <li class="nav-item">
-            <a class="nav-link " th:if="${session.usuariosession == null}" href="/login" id="navbarDropdown" role="button" aria-expanded="false">
+            <a class="nav-link " th:if="${session.subject == null}" href="/login" id="navbarDropdown" role="button" aria-expanded="false">
               LOGIN!
             </a>
 
@@ -43,12 +43,15 @@
     </nav>
     <nav class="navbar navbar-expand-lg navBar" th:fragment="navbar">
       <div class="containerImg">
-        <a href="/" class="navbar-brand d-flex align-items-center">
+        <a href="/home" class="navbar-brand d-flex align-items-center">
           <img class="logo" src="/img/Egg.png" alt="Img logo egg" />
         </a>
       </div>
-      <p class="tituloLibros" th:if="${session.usuariosession !=
-null}" th:text=" 'Hola de vuelta '+ ${session.usuariosession.nombre} "></p>
+      <p class="tituloLibros" th:if="${session.subject != null}" >
+        <!-- th:text=" 'Hola de vuelta '+ ${session.subject.nombre} "-->
+      <span sec:authentication="name"></span></p>
+      <div sec:authorize="hasRole('ADMIN')">
+        <p>Bienvenido, administrador.</p> </div>
       <button
         class="navbar-toggler"
         type="button"

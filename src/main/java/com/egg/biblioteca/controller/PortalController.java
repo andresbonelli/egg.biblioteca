@@ -1,6 +1,7 @@
 package com.egg.biblioteca.controller;
 
 import com.egg.biblioteca.controller.dto.UserRegisterDTO;
+import com.egg.biblioteca.domain.entity.Role;
 import com.egg.biblioteca.domain.entity.Usuario;
 import com.egg.biblioteca.service.UsuarioService;
 import jakarta.servlet.http.HttpSession;
@@ -21,16 +22,19 @@ public class PortalController {
 
     @GetMapping("/home")
     public String index(HttpSession session) {
-        Usuario authenticatedUser = (Usuario) session.getAttribute("usuariosession");
-        return "home.html";
+        Usuario authenticatedUser = (Usuario) session.getAttribute("subject");
+        /*if (authenticatedUser.getRol().toString().equals("ADMIN")) {
+            return "redirect:/admin/dashboard";
+        }*/
+        return "home";
     }
 
     @GetMapping("/login")
     public String login(@RequestParam(required = false) String error, ModelMap modelo ) {
-        if (error != null) {
+        if (null != error) {
             modelo.put("error", "Usuario o Contraseña inválidos!");
         }
-        return "login_form.html";
+        return "login_form";
     }
 
     @GetMapping("/registrar")

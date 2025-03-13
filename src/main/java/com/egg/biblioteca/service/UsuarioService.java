@@ -33,8 +33,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UsuarioService implements UserDetailsService {
 
-    ErrorController errorController;
-
     private final UsuarioRepository usuarioRepository;
     private final ImagenService imagenService;
 

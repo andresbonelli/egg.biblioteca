@@ -11,7 +11,7 @@
 <!-- MODIFICAMOS NUESTRO ARCHIVO INDEX PARA QUE SEA LA VISTA AL INGRESAR A LA PÁGINA SIN LOGGEARNOS Y CREAMOS UN ARCHIVO INICIO PARA
     LA VISTA QUE VEREMOS AL INICIAR SESION -->
 <body>
-<nav th:replace="~{layout :: landing-nav}"></nav>
+<nav th:replace="~{fragments/navbar :: navbar}"></nav>
 <div th:if="${exito}!=null" class="card text-white bg-success mb-3 mt-3 mensajeExito" >
     <div class="card-body">
         <h5 class="card-title">Exito</h5>

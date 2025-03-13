@@ -21,12 +21,18 @@ public class PortalController {
 
     private final UsuarioService usuarioService;
 
-    @GetMapping("/home")
+    @GetMapping("/")
     public String index(HttpSession session) {
         Usuario authenticatedUser = (Usuario) session.getAttribute("subject");
-        /*if (authenticatedUser.getRol().toString().equals("ADMIN")) {
-            return "redirect:/admin/dashboard";
-        }*/
+        if (authenticatedUser != null) {
+            return "redirect:home";
+        }
+        return "index";
+    }
+
+    @GetMapping("/home")
+    public String home(HttpSession session) {
+        Usuario authenticatedUser = (Usuario) session.getAttribute("subject");
         return "home";
     }
 

@@ -6,6 +6,7 @@ import com.egg.biblioteca.service.AutorService;
 import com.egg.biblioteca.service.EditorialService;
 import com.egg.biblioteca.service.LibroService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.ui.ModelMap;
@@ -26,6 +27,7 @@ public class LibroController {
         return "libro_list.html";
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/registrar")
     public String registrar(ModelMap model) {
         model.addAttribute("autores", autorService.listarAutores());
@@ -33,6 +35,7 @@ public class LibroController {
         return "libro_form.html";
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/registro")
     public String registro(@ModelAttribute LibroRequestDTO libro, ModelMap model) {
         libroService.crearLibro(libro);
@@ -40,6 +43,7 @@ public class LibroController {
         return "home.html";
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/editar/{isbn}")
     public String editar(@PathVariable Long isbn, ModelMap model) {
         Libro libro = libroService.buscarPorIsbn(isbn);
@@ -56,6 +60,7 @@ public class LibroController {
         return "libro_edit_form.html";
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/editar")
     public String editar(@ModelAttribute LibroRequestDTO libro, ModelMap model) {
         libroService.modificarLibro(libro);
@@ -63,6 +68,7 @@ public class LibroController {
         return "redirect:lista";
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/eliminar/{isbn}")
     public String eliminar(@PathVariable Long isbn, ModelMap model) {
         libroService.eliminarLibro(isbn);

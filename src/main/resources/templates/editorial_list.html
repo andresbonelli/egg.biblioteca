@@ -15,7 +15,7 @@
   <!--  <link rel="stylesheet" href="/css/lista.css" />-->
 </head>
 <body>
-<nav th:replace="~{layout :: navbar}"></nav>
+<nav th:replace="~{fragments/navbar :: navbar}"></nav>
 <div class="container mt-5">
   <h2 class="text-center mb-4">Lista de Editoriales</h2>
   <table class="table table-striped table-bordered">
@@ -36,7 +36,7 @@
     <a th:href="@{/home}" class="btn btn-primary">Volver al Inicio</a>
   </div>
 </div>
-<footer th:replace="~{layout :: footer}"></footer>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

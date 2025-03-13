@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head th:replace="~{page-head :: page_head}">
+<body>
+<!--NAVBAR POSTA-->
+<nav class="navbar navbar-expand-lg navBar" th:fragment="navbar">
+  <div  class="containerImg">
+    <a href="/" class="navbar-brand d-flex align-items-center">
+      <img class="logo" src="/img/Egg.png" alt="Img logo egg" />
+    </a>
+  </div>
+  <p class="tituloLibros" th:if="${session.subject != null}" >
+    <!-- th:text=" 'Hola de vuelta '+ ${session.subject.nombre} "-->
+    Hola, <span sec:authentication="name"></span></p>
+  <div sec:authorize="hasRole('ADMIN')">
+    <p>Bienvenido, administrador.</p> </div>
+  <div th:if="${session.subject != null}" class="container">
+    <a th:if="${session.subject.imagen != null}" class="d-flex align-items-center">
+      <img class="logo" th:src="@{/imagen/perfil/__${session.subject.id}__}" >
+    </a>
+  </div>
+
+  <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div th:if="${session.subject != null}" class="collapse navbar-collapse elementosNav" id="navbarNavDropdown">
+    <ul class="navbar-nav ms-auto elementos">
+      <li class="nav-item dropdown">
+        <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+        >
+          Libros
+        </a>
+        <ul class="dropdown-menu">
+          <li sec:authorize="hasRole('ADMIN')">
+            <a class="dropdown-item" th:href="@{/libro/registrar}"
+            >Crear Libro</a
+            >
+          </li>
+          <li>
+            <a class="dropdown-item" th:href="@{/libro/lista}"
+            >Listar Libros</a
+            >
+          </li>
+        </ul>
+      </li>
+      <li class="nav-item dropdown">
+        <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+        >
+          Autores
+        </a>
+        <ul class="dropdown-menu">
+          <li sec:authorize="hasRole('ADMIN')">
+            <a class="dropdown-item" th:href="@{/autor/registrar}"
+            >Crear Autor</a
+            >
+          </li>
+          <li>
+            <a class="dropdown-item" th:href="@{/autor/lista}"
+            >Listar Autores</a
+            >
+          </li>
+        </ul>
+      </li>
+      <li class="nav-item dropdown">
+        <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+        >
+          Editoriales
+        </a>
+        <ul class="dropdown-menu">
+          <li sec:authorize="hasRole('ADMIN')">
+            <a class="dropdown-item" th:href="@{/editorial/registrar}"
+            >Crear Editorial</a
+            >
+          </li>
+          <li>
+            <a class="dropdown-item" th:href="@{/editorial/lista}"
+            >Listar Editoriales</a
+            >
+          </li>
+        </ul>
+      </li>
+      <li class="nav-item dropdown">
+        <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+        >
+          Perfil
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <li><a class="dropdown-item" href="/logout">Cerrar Sesión</a></li>
+        </ul>
+      </li>
+    </ul>
+
+  </div>
+  <div class="collapse navbar-collapse elementosNav" id="navbarNavDropdown">
+    <ul class="navbar-nav ms-auto elementos">
+      <li class="nav-item">
+        <a class="nav-link " th:if="${session.subject == null}" href="/registrar" id="navbarDropdown" role="button" aria-expanded="false">
+          Registrate!
+        </a>
+
+      </li>
+      <li class="nav-item">
+        <a class="nav-link " th:if="${session.subject == null}" href="/login" id="navbarDropdown" role="button" aria-expanded="false">
+          LOGIN!
+        </a>
+
+      </li>
+    </ul>
+  </div>
+</nav>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

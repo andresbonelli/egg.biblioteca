@@ -70,6 +70,33 @@ public class UsuarioService implements UserDetailsService {
         usuarioRepository.save(nuevoUsuario);
     }
 
+    public Usuario buscarPorId(UUID id) {
+        return usuarioRepository.findById(id).orElseThrow(RegistroNoExisteException::new);
+    }
+
+    public List<Usuario> listarUsuarios() {
+        return usuarioRepository.findAll();
+    }
+
+    public void cambiarRol(UUID id) {
+        Usuario usuario = buscarPorId(id);
+        usuario.setRol(usuario.getRol().equals(Role.USER) ? Role.ADMIN : Role.USER);
+        usuarioRepository.save(usuario);
+    }
+
+    public void actualizar(MultipartFile archivo, UUID id, String nombre, String email, String password, String confirmPassword) {
+        Usuario usuario = buscarPorId(id);
+        validar(nombre, email, password, confirmPassword);
+        usuario.setNombre(nombre);
+        usuario.setEmail(email);
+        usuario.setPasswordHash(new BCryptPasswordEncoder().encode(password));
+        if (archivo != null) {
+            Imagen imagen = imagenService.guardar(archivo);
+            usuario.setImagen(imagen);
+        }
+        usuarioRepository.save(usuario);
+    }
+
     private void validar(String nombre, String email, String password, String confirmPassword) throws ValidationException {
 
         if (null == nombre || nombre.isBlank()) {
@@ -84,9 +111,5 @@ public class UsuarioService implements UserDetailsService {
         if (!password.equals(confirmPassword)) {
             throw new ValidationException("Las contraseñas ingresadas deben ser iguales");
         }
-    }
-
-    public Usuario buscarPorId(UUID id) {
-        return usuarioRepository.findById(id).orElseThrow(RegistroNoExisteException::new);
     }
 }

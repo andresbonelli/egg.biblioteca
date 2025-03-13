@@ -106,6 +106,18 @@
         </ul>
       </li>
       <li class="nav-item dropdown">
+        <a sec:authorize="hasRole('ADMIN')" class="nav-link dropdown-toggle"
+           th:if="${session.subject != null}" href="#" id="navbarDropdown"
+           role="button" data-bs-toggle="dropdown" aria-expanded="false"
+        >
+          Usuarios
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+          <li><a class="dropdown-item" th:href="@{/admin/usuarios}">Listar Usuarios</a></li>
+        </ul>
+      </li>
+      <li class="nav-item dropdown">
         <a
                 class="nav-link dropdown-toggle"
                 href="#"
@@ -117,6 +129,7 @@
           Perfil
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <li><a class="dropdown-item" th:href="@{/perfil}" >Editar Perfil</a></li>
           <li><a class="dropdown-item" href="/logout">Cerrar Sesión</a></li>
         </ul>
       </li>

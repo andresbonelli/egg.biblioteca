@@ -86,11 +86,26 @@ public class UsuarioService implements UserDetailsService {
 
     public void actualizar(MultipartFile archivo, UUID id, String nombre, String email, String password, String confirmPassword) {
         Usuario usuario = buscarPorId(id);
+        if (password.isBlank()) {
+            actualizarSinPassword(archivo, id, nombre, email);
+            return;
+        }
         validar(nombre, email, password, confirmPassword);
         usuario.setNombre(nombre);
         usuario.setEmail(email);
         usuario.setPasswordHash(new BCryptPasswordEncoder().encode(password));
-        if (archivo != null) {
+        if (archivo != null && !archivo.getName().isEmpty()) {
+            Imagen imagen = imagenService.guardar(archivo);
+            usuario.setImagen(imagen);
+        }
+        usuarioRepository.save(usuario);
+    }
+
+    private void actualizarSinPassword(MultipartFile archivo, UUID id, String nombre, String email) {
+        Usuario usuario = buscarPorId(id);
+        usuario.setNombre(nombre);
+        usuario.setEmail(email);
+        if (archivo != null && !archivo.getName().isEmpty()) {
             Imagen imagen = imagenService.guardar(archivo);
             usuario.setImagen(imagen);
         }

@@ -1,10 +1,17 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-    <head th:replace="~{fragments/head :: head}"></head>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="utf-8" >
+    <title>Biblioteca Egg</title>
+    <link href="css/one-page-wonder.min.css" rel="stylesheet">
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/index.css">
+</head>
     <body>
 
-        <nav th:replace="~{fragments/navbar :: nav}"></nav>
-        <div th:replace="~{fragments/mensajeEE :: div}"></div>
+        <nav th:replace="~{fragments/navbar :: navbar}"></nav>
+        <div th:replace="~{fragments/mensajes :: mensajes}"></div>
         <div class="container m-5" >
 
             <table class="table table-dark">
@@ -23,8 +30,11 @@
                     <tr>
                         <th scope="row" th:text="${usuario.id}"></th>
                         <td th:text="${usuario.nombre}"></td>
-                        <td 
-                            <a><img th:if="${usuario.imagen != null}" class="logo" th:src="@{/imagen/perfil/__${usuario.id}__}" ></a>
+                        <td>
+                            <a><img th:if="${usuario.imagen != null}"
+                                    class="logo img-fluid rounded-circle"
+                                    style="width: 10%; height: auto;"
+                                    th:src="@{/imagen/perfil/__${usuario.id}__}" ></a>
                         </td>
 
                         <td th:text="${usuario.rol}"></td>

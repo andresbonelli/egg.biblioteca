@@ -16,7 +16,7 @@
     <p>Bienvenido, administrador.</p> </div>
   <div th:if="${session.subject != null}" class="container">
     <a th:if="${session.subject.imagen != null}" class="d-flex align-items-center">
-      <img class="logo" th:src="@{/imagen/perfil/__${session.subject.id}__}" >
+      <img class="logo" style="width: 10%; height: auto;" th:src="@{/imagen/perfil/__${session.subject.id}__}" >
     </a>
   </div>
 

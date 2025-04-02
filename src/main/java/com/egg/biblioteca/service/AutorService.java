@@ -44,9 +44,9 @@ public class AutorService {
     }
 
     @Transactional
-    public void modificarAutor(Autor autor){
+    public Autor modificarAutor(Autor autor){
         autorRepository.findById(autor.getId()).orElseThrow(RegistroNoExisteException::new);
-        autorRepository.save(autor);
+        return autorRepository.save(autor);
     }
 
     @Transactional

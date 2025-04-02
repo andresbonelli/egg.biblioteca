@@ -36,8 +36,7 @@ public class AutorRC {
     @ResponseStatus(HttpStatus.ACCEPTED)
     public ResponseEntity<Autor> modificarAutor(@RequestBody Autor autor){
         try {
-            autorService.modificarAutor(autor);
-            return ResponseEntity.ok(autor);
+            return ResponseEntity.ok(autorService.modificarAutor(autor));
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }

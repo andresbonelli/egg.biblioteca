@@ -5,12 +5,13 @@ import com.egg.biblioteca.domain.entity.Libro;
 import com.egg.biblioteca.service.LibroService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/libro")
+@RequestMapping("/api/libro")
 @AllArgsConstructor
 public class LibroRC {
 
@@ -28,14 +29,18 @@ public class LibroRC {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void crearLibro(@RequestBody LibroRequestDTO request){
-        libroService.crearLibro(request);
+    public Libro crearLibro(@RequestBody LibroRequestDTO request){
+        return libroService.crearLibro(request);
     }
 
     @PutMapping
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void modificarLibro(@RequestBody LibroRequestDTO request){
-        libroService.modificarLibro(request);
+    public ResponseEntity<Libro> modificarLibro(@RequestBody LibroRequestDTO request){
+        try {
+            return ResponseEntity.ok(libroService.modificarLibro(request));
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("/{isbn}")

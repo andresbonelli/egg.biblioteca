@@ -34,19 +34,19 @@ public class AutorService {
     }
 
     @Transactional
-    public void crearAutor(String nombre){
+    public Autor crearAutor(String nombre){
         Autor autor = new Autor();
         if  (nombre == null || nombre.isBlank()) {
             throw new ValidationException("El nombre no puede ser VACIO o NULO");
         }
         autor.setNombre(nombre);
-        autorRepository.save(autor);
+        return autorRepository.save(autor);
     }
 
     @Transactional
-    public void modificarAutor(Autor autor){
+    public Autor modificarAutor(Autor autor){
         autorRepository.findById(autor.getId()).orElseThrow(RegistroNoExisteException::new);
-        autorRepository.save(autor);
+        return autorRepository.save(autor);
     }
 
     @Transactional

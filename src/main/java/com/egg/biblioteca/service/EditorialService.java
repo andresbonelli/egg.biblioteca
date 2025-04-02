@@ -33,18 +33,18 @@ public class EditorialService {
     }
 
     @Transactional
-    public void crearEditorial(String nombre){
+    public Editorial crearEditorial(String nombre){
         Editorial editorial = new Editorial();
         if (null  == nombre || nombre.isBlank()) {
             throw new ValidationException("El nombre no puede ser VACIO o NULO");
         }
         editorial.setNombre(nombre);
-        editorialRepository.save(editorial);
+        return editorialRepository.save(editorial);
     }
 
     @Transactional
-    public void modificarEditorial(Editorial editorial){
-        editorialRepository.save(editorial);
+    public Editorial modificarEditorial(Editorial editorial){
+        return editorialRepository.save(editorial);
     }
 
     @Transactional

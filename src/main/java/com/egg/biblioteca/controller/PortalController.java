@@ -56,4 +56,13 @@ public class PortalController {
         return "redirect:login";
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+    @GetMapping("/perfil")
+    public String perfil(ModelMap modelo, HttpSession session) {
+        Usuario usuario = (Usuario) session.getAttribute("subject");
+        modelo.put("usuario", usuario);
+
+        return "usuario_modificar.html";
+    }
+
 }

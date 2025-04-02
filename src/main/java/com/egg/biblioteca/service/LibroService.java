@@ -49,7 +49,7 @@ public class LibroService {
     }
 
     @Transactional
-    public void crearLibro(LibroRequestDTO libro) {
+    public Libro crearLibro(LibroRequestDTO libro) {
         validar(libro.isbn(), libro.titulo(), libro.ejemplares());
         if (libroRepository.existsById(libro.isbn())) {
             throw new ValidationException("El ISBN ya existe.");
@@ -66,11 +66,11 @@ public class LibroService {
             throw new ValidationException("Editorial o Autor no existente.");
         }
         nuevoLibro.setAlta(new Date());
-        libroRepository.save(nuevoLibro);
+        return libroRepository.save(nuevoLibro);
     }
 
     @Transactional
-    public void modificarLibro(LibroRequestDTO libro) {
+    public Libro modificarLibro(LibroRequestDTO libro) {
         validar(libro.isbn(), libro.titulo(), libro.ejemplares());
         Libro libroModificado = libroRepository.findById(libro.isbn()).orElseThrow(RegistroNoExisteException::new);
         libroModificado.setTitulo(libro.titulo());
@@ -82,7 +82,7 @@ public class LibroService {
             log.error("Error al modificar el libro: {}", e.getMessage());
             throw new ValidationException("Editorial o Autor no existente.");
         }
-        libroRepository.save(libroModificado);
+        return libroRepository.save(libroModificado);
     }
 
     @Transactional

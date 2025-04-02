@@ -3,12 +3,13 @@ package com.egg.biblioteca.controller.rc;
 import com.egg.biblioteca.domain.entity.Editorial;
 import com.egg.biblioteca.service.EditorialService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/editorial")
+@RequestMapping("/api/editorial")
 @RequiredArgsConstructor
 public class EditorialRC {
 
@@ -25,13 +26,17 @@ public class EditorialRC {
     }
 
     @PostMapping
-    public void crearEditorial(@RequestParam String nombre){
-        editorialService.crearEditorial(nombre);
+    public Editorial crearEditorial(@RequestParam String nombre){
+        return editorialService.crearEditorial(nombre);
     }
 
     @PutMapping
-    public void modificarEditorial(@RequestBody Editorial editorial){
-        editorialService.modificarEditorial(editorial);
+    public ResponseEntity<Editorial> modificarEditorial(@RequestBody Editorial editorial){
+        try {
+            return ResponseEntity.ok(editorialService.modificarEditorial(editorial));
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping

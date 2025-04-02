@@ -4,12 +4,13 @@ import com.egg.biblioteca.domain.entity.Autor;
 import com.egg.biblioteca.service.AutorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/autor")
+@RequestMapping("/api/autor")
 @RequiredArgsConstructor
 public class AutorRC {
 
@@ -27,14 +28,18 @@ public class AutorRC {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void crearAutor(@RequestParam String nombre){
-        autorService.crearAutor(nombre);
+    public Autor crearAutor(@RequestParam String nombre){
+        return autorService.crearAutor(nombre);
     }
 
     @PutMapping
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void modificarAutor(@RequestBody Autor autor){
-        autorService.modificarAutor(autor);
+    public ResponseEntity<Autor> modificarAutor(@RequestBody Autor autor){
+        try {
+            return ResponseEntity.ok(autorService.modificarAutor(autor));
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping

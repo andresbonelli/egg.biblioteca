@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/rc/autor")
+@RequestMapping("/api/autor")
 @RequiredArgsConstructor
 public class AutorRC {
 

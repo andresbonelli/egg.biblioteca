@@ -1,6 +1,7 @@
 package com.egg.biblioteca.service;
 
 import com.egg.biblioteca.controller.dto.UserRegisterDTO;
+import com.egg.biblioteca.controller.dto.UserResponseDTO;
 import com.egg.biblioteca.domain.entity.Imagen;
 import com.egg.biblioteca.domain.entity.Role;
 import com.egg.biblioteca.domain.entity.Usuario;
@@ -10,7 +11,6 @@ import com.egg.biblioteca.exception.ValidationException;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -56,7 +56,7 @@ public class UsuarioService implements UserDetailsService {
     }
 
     @Transactional
-    public void registro(UserRegisterDTO usuario, MultipartFile file) {
+    public UserResponseDTO registro(UserRegisterDTO usuario, MultipartFile file) {
         validar(usuario.nombre(), usuario.email(), usuario.password(), usuario.confirmPassword());
         Usuario nuevoUsuario = new Usuario();
         nuevoUsuario.setNombre(usuario.nombre());
@@ -67,15 +67,17 @@ public class UsuarioService implements UserDetailsService {
             Imagen imagen = imagenService.guardar(file);
             nuevoUsuario.setImagen(imagen);
         }
-        usuarioRepository.save(nuevoUsuario);
+        Usuario newUser = usuarioRepository.save(nuevoUsuario);
+        return getUserResponseDTO(newUser);
     }
 
     public Usuario buscarPorId(UUID id) {
         return usuarioRepository.findById(id).orElseThrow(RegistroNoExisteException::new);
     }
 
-    public List<Usuario> listarUsuarios() {
-        return usuarioRepository.findAll();
+    public List<UserResponseDTO> listarUsuarios() {
+        List<Usuario> usuarios = usuarioRepository.findAll();
+        return usuarios.stream().map(this::getUserResponseDTO).toList();
     }
 
     public void cambiarRol(UUID id) {
@@ -84,7 +86,7 @@ public class UsuarioService implements UserDetailsService {
         usuarioRepository.save(usuario);
     }
 
-    public void actualizar(MultipartFile archivo, UUID id, String nombre, String email, String password, String confirmPassword) {
+    public void actualizar(UUID id, String nombre, String email, String password, String confirmPassword, MultipartFile archivo) {
         Usuario usuario = buscarPorId(id);
         if (password.isBlank()) {
             actualizarSinPassword(archivo, id, nombre, email);
@@ -99,6 +101,21 @@ public class UsuarioService implements UserDetailsService {
             usuario.setImagen(imagen);
         }
         usuarioRepository.save(usuario);
+    }
+
+    public void eliminar(UUID id) {
+        Usuario usuario = buscarPorId(id);
+        usuarioRepository.delete(usuario);
+    }
+
+    private UserResponseDTO getUserResponseDTO(Usuario newUser) {
+        return new UserResponseDTO(
+                newUser.getId().toString(),
+                newUser.getNombre(),
+                newUser.getEmail(),
+                newUser.getRol().name(),
+                newUser.getImagen() != null ? newUser.getImagen().getId().toString() : null
+        );
     }
 
     private void actualizarSinPassword(MultipartFile archivo, UUID id, String nombre, String email) {

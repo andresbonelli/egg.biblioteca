@@ -1,9 +1,9 @@
 package com.egg.biblioteca.controller;
 
+import com.egg.biblioteca.controller.dto.UserResponseDTO;
 import com.egg.biblioteca.domain.entity.Usuario;
 import com.egg.biblioteca.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -23,8 +23,9 @@ public class AdminController {
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/usuarios")
     public String listar(ModelMap modelo){
-        List<Usuario> usuarios = usuarioService.listarUsuarios();
+        List<UserResponseDTO> usuarios = usuarioService.listarUsuarios();
         modelo.addAttribute("usuarios", usuarios);
+        // TODO modificar modelo usuarios en template
         return "usuario_list";
     }
 
@@ -57,7 +58,7 @@ public class AdminController {
 
         try{
             UUID uuid = UUID.fromString(id);
-            usuarioService.actualizar(archivo, uuid, nombre, email, password, confirmPassword);
+            usuarioService.actualizar(uuid, nombre, email, password, confirmPassword, archivo);
             modelo.put("exito", "El usuario fue actualizado correctamente.");
             return "redirect:usuarios";
         } catch (Exception ex) {

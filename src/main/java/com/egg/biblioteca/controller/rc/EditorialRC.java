@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/rc/editorial")
+@RequestMapping("/api/editorial")
 @RequiredArgsConstructor
 public class EditorialRC {
 

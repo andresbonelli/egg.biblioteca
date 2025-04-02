@@ -63,7 +63,7 @@ public class UsuarioService implements UserDetailsService {
         nuevoUsuario.setEmail(usuario.email());
         nuevoUsuario.setPasswordHash(new BCryptPasswordEncoder().encode(usuario.password()));
         nuevoUsuario.setRol(Role.USER);
-        if (file != null) {
+        if (null != file) {
             Imagen imagen = imagenService.guardar(file);
             nuevoUsuario.setImagen(imagen);
         }

@@ -29,7 +29,7 @@ public class UsuarioRC {
 
     @PostMapping("/registro")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<UserResponseDTO> registro(@RequestPart String usuarioJson, @RequestPart MultipartFile file) {
+    public ResponseEntity<UserResponseDTO> registro(@RequestPart String usuarioJson, @RequestPart(required = false) MultipartFile file) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             UserRegisterDTO usuario = objectMapper.readValue(usuarioJson, UserRegisterDTO.class);

@@ -21,6 +21,7 @@ import java.util.List;
 public class UsuarioRC {
 
     private final UsuarioService usuarioService;
+    private final ObjectMapper objectMapper;
 
     @GetMapping("/listar")
     public ResponseEntity<List<UserResponseDTO>> listarUsuarios() {
@@ -45,7 +46,6 @@ public class UsuarioRC {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<?> actualizar(@PathVariable String id, @RequestPart String usuarioJson, @RequestPart(required = false) MultipartFile file) {
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
             UserRegisterDTO usuario = objectMapper.readValue(usuarioJson, UserRegisterDTO.class);
             usuarioService.actualizar(
                     java.util.UUID.fromString(id),

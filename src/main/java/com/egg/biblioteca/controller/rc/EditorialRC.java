@@ -3,6 +3,7 @@ package com.egg.biblioteca.controller.rc;
 import com.egg.biblioteca.domain.entity.Editorial;
 import com.egg.biblioteca.service.EditorialService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,11 +27,13 @@ public class EditorialRC {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public Editorial crearEditorial(@RequestParam String nombre){
         return editorialService.crearEditorial(nombre);
     }
 
     @PutMapping
+    @ResponseStatus(HttpStatus.ACCEPTED)
     public ResponseEntity<Editorial> modificarEditorial(@RequestBody Editorial editorial){
         try {
             return ResponseEntity.ok(editorialService.modificarEditorial(editorial));
@@ -40,6 +43,7 @@ public class EditorialRC {
     }
 
     @DeleteMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void eliminarEditorial(@RequestBody Editorial editorial){
         editorialService.eliminarEditorial(editorial);
     }

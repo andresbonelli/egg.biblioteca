@@ -1,6 +1,7 @@
 package com.egg.biblioteca.controller.rc;
 
 import com.egg.biblioteca.controller.dto.LibroRequestDTO;
+import com.egg.biblioteca.controller.dto.LibroResponseDTO;
 import com.egg.biblioteca.domain.entity.Libro;
 import com.egg.biblioteca.service.LibroService;
 import lombok.AllArgsConstructor;
@@ -18,7 +19,7 @@ public class LibroRC {
     private final LibroService libroService;
 
     @GetMapping("/listar")
-    public List<Libro> listarLibros(){
+    public List<LibroResponseDTO> listarLibros(){
         return libroService.listarLibros();
     }
 
@@ -29,13 +30,13 @@ public class LibroRC {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Libro crearLibro(@RequestBody LibroRequestDTO request){
+    public LibroResponseDTO crearLibro(@RequestBody LibroRequestDTO request){
         return libroService.crearLibro(request);
     }
 
     @PutMapping
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public ResponseEntity<Libro> modificarLibro(@RequestBody LibroRequestDTO request){
+    public ResponseEntity<LibroResponseDTO> modificarLibro(@RequestBody LibroRequestDTO request){
         try {
             return ResponseEntity.ok(libroService.modificarLibro(request));
         } catch (Exception e) {

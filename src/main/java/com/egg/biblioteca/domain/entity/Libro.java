@@ -1,11 +1,12 @@
 package com.egg.biblioteca.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "t_libro",  schema = "biblioteca")
@@ -23,9 +24,8 @@ public class Libro {
     @Column(name = "ejemplares")
     private Integer ejemplares;
 
-    @Temporal(TemporalType.DATE)
     @Column(name = "alta")
-    private Date alta;
+    private LocalDate alta;
 
     @ManyToOne
     @JoinColumn(name = "id_autor")

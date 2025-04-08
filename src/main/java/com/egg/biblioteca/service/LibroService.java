@@ -1,6 +1,7 @@
 package com.egg.biblioteca.service;
 
 import com.egg.biblioteca.controller.dto.LibroRequestDTO;
+import com.egg.biblioteca.controller.dto.LibroResponseDTO;
 import com.egg.biblioteca.domain.entity.Libro;
 import com.egg.biblioteca.domain.repository.LibroRepository;
 import com.egg.biblioteca.exception.ValidationException;
@@ -10,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,8 +25,12 @@ public class LibroService {
     private final EditorialService editorialService;
 
     @Transactional(readOnly = true)
-    public List<Libro> listarLibros() {
-        return libroRepository.findAll();
+    public List<LibroResponseDTO> listarLibros() {
+        List<Libro> libros = libroRepository.findAll();
+        if (libros.isEmpty()) {
+            throw new RegistroNoExisteException();
+        }
+        return libros.stream().map(this::getLibroResponseDTO).toList();
     }
 
     @Transactional(readOnly = true)
@@ -49,7 +54,7 @@ public class LibroService {
     }
 
     @Transactional
-    public Libro crearLibro(LibroRequestDTO libro) {
+    public LibroResponseDTO crearLibro(LibroRequestDTO libro) {
         validar(libro.isbn(), libro.titulo(), libro.ejemplares());
         if (libroRepository.existsById(libro.isbn())) {
             throw new ValidationException("El ISBN ya existe.");
@@ -65,12 +70,12 @@ public class LibroService {
             log.error("Error al crear el libro: {}", e.getMessage());
             throw new ValidationException("Editorial o Autor no existente.");
         }
-        nuevoLibro.setAlta(new Date());
-        return libroRepository.save(nuevoLibro);
+        nuevoLibro.setAlta(LocalDate.now());
+        return getLibroResponseDTO(libroRepository.save(nuevoLibro));
     }
 
     @Transactional
-    public Libro modificarLibro(LibroRequestDTO libro) {
+    public LibroResponseDTO modificarLibro(LibroRequestDTO libro) {
         validar(libro.isbn(), libro.titulo(), libro.ejemplares());
         Libro libroModificado = libroRepository.findById(libro.isbn()).orElseThrow(RegistroNoExisteException::new);
         libroModificado.setTitulo(libro.titulo());
@@ -82,7 +87,7 @@ public class LibroService {
             log.error("Error al modificar el libro: {}", e.getMessage());
             throw new ValidationException("Editorial o Autor no existente.");
         }
-        return libroRepository.save(libroModificado);
+        return getLibroResponseDTO(libroRepository.save(libroModificado));
     }
 
     @Transactional
@@ -101,5 +106,16 @@ public class LibroService {
         if(null == ejemplares || ejemplares <= 0){
             throw new ValidationException("Los EJEMPLARES no pueden ser NULOS");
         }
+    }
+
+    private LibroResponseDTO getLibroResponseDTO(Libro libro) {
+        return new LibroResponseDTO(
+                libro.getIsbn(),
+                libro.getTitulo(),
+                libro.getEjemplares(),
+                libro.getAlta(),
+                libro.getAutor().getNombre(),
+                libro.getEditorial().getNombre()
+        );
     }
 }

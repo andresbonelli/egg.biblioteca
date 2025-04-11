@@ -1,7 +1,7 @@
-package com.egg.biblioteca.controller.rc;
+package com.egg.biblioteca.api.controller.rc;
 
-import com.egg.biblioteca.controller.dto.LibroRequestDTO;
-import com.egg.biblioteca.controller.dto.LibroResponseDTO;
+import com.egg.biblioteca.api.dto.LibroRequestDTO;
+import com.egg.biblioteca.api.dto.LibroResponseDTO;
 import com.egg.biblioteca.domain.entity.Libro;
 import com.egg.biblioteca.service.LibroService;
 import lombok.AllArgsConstructor;

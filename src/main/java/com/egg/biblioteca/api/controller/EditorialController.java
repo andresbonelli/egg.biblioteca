@@ -1,4 +1,4 @@
-package com.egg.biblioteca.controller;
+package com.egg.biblioteca.api.controller;
 
 import com.egg.biblioteca.service.EditorialService;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
-package com.egg.biblioteca.controller;
+package com.egg.biblioteca.api.controller;
 
-import com.egg.biblioteca.controller.dto.UserResponseDTO;
+import com.egg.biblioteca.api.dto.UserResponseDTO;
 import com.egg.biblioteca.domain.entity.Usuario;
 import com.egg.biblioteca.service.UsuarioService;
 import lombok.RequiredArgsConstructor;

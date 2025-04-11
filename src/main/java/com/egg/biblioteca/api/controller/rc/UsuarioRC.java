@@ -1,11 +1,10 @@
-package com.egg.biblioteca.controller.rc;
+package com.egg.biblioteca.api.controller.rc;
 
-import com.egg.biblioteca.controller.dto.UserRegisterDTO;
-import com.egg.biblioteca.controller.dto.UserResponseDTO;
+import com.egg.biblioteca.api.dto.UserRegisterDTO;
+import com.egg.biblioteca.api.dto.UserResponseDTO;
 import com.egg.biblioteca.service.UsuarioService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,7 +1,7 @@
 package com.egg.biblioteca.service;
 
-import com.egg.biblioteca.controller.dto.UserRegisterDTO;
-import com.egg.biblioteca.controller.dto.UserResponseDTO;
+import com.egg.biblioteca.api.dto.UserRegisterDTO;
+import com.egg.biblioteca.api.dto.UserResponseDTO;
 import com.egg.biblioteca.domain.entity.Imagen;
 import com.egg.biblioteca.domain.entity.Role;
 import com.egg.biblioteca.domain.entity.Usuario;

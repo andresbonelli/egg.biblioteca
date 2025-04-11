@@ -1,4 +1,4 @@
-package com.egg.biblioteca.controller.rc;
+package com.egg.biblioteca.api.controller.rc;
 
 import com.egg.biblioteca.domain.entity.Autor;
 import com.egg.biblioteca.service.AutorService;

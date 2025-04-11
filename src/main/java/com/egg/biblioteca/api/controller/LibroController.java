@@ -1,6 +1,6 @@
-package com.egg.biblioteca.controller;
+package com.egg.biblioteca.api.controller;
 
-import com.egg.biblioteca.controller.dto.LibroRequestDTO;
+import com.egg.biblioteca.api.dto.LibroRequestDTO;
 import com.egg.biblioteca.domain.entity.Libro;
 import com.egg.biblioteca.service.AutorService;
 import com.egg.biblioteca.service.EditorialService;

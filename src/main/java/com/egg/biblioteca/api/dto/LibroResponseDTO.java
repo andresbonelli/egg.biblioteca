@@ -1,4 +1,4 @@
-package com.egg.biblioteca.controller.dto;
+package com.egg.biblioteca.api.dto;
 
 import java.time.LocalDate;
 

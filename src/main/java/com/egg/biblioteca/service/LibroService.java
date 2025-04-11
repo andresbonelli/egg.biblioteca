@@ -1,7 +1,7 @@
 package com.egg.biblioteca.service;
 
-import com.egg.biblioteca.controller.dto.LibroRequestDTO;
-import com.egg.biblioteca.controller.dto.LibroResponseDTO;
+import com.egg.biblioteca.api.dto.LibroRequestDTO;
+import com.egg.biblioteca.api.dto.LibroResponseDTO;
 import com.egg.biblioteca.domain.entity.Libro;
 import com.egg.biblioteca.domain.repository.LibroRepository;
 import com.egg.biblioteca.exception.ValidationException;

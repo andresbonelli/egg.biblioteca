@@ -1,4 +1,4 @@
-package com.egg.biblioteca.controller.dto;
+package com.egg.biblioteca.api.dto;
 
 public record UserResponseDTO(
         String id,

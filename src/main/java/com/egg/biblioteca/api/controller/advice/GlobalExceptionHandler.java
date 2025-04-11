@@ -1,4 +1,4 @@
-package com.egg.biblioteca.controller.advice;
+package com.egg.biblioteca.api.controller.advice;
 
 import com.egg.biblioteca.exception.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
